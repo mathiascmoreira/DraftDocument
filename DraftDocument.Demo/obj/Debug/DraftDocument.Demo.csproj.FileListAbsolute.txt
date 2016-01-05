@@ -1,0 +1,11 @@
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.csprojResolveAssemblyReference.cache
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.Properties.Resources.resources
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.csproj.GenerateResource.Cache
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.exe.licenses
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\bin\Debug\DraftDocument.Demo.exe.config
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\bin\Debug\DraftDocument.Demo.exe
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\bin\Debug\DraftDocument.Demo.pdb
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\bin\Debug\DraftDocument.dll
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\bin\Debug\DraftDocument.pdb
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.exe
+C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument.Demo\obj\Debug\DraftDocument.Demo.pdb
