@@ -1,8 +1,9 @@
-C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument\bin\Debug\DraftDocument.dll
-C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument\bin\Debug\DraftDocument.pdb
-C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.dll
-C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.pdb
-C:\Users\Mathias\documents\visual studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.dll.licenses
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\bin\Debug\DraftDocument.dll
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\bin\Debug\DraftDocument.pdb
 C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.DraftEditor.resources
 C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.csproj.GenerateResource.Cache
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.dll.licenses
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.dll
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.pdb
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.Properties.Resources.resources
 C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DraftDocument\obj\Debug\DraftDocument.csprojResolveAssemblyReference.cache

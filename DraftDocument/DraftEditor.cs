@@ -1,237 +1,132 @@
-﻿using DevExpress.Office.Utils;
-using DevExpress.XtraEditors;
-using DevExpress.XtraRichEdit;
+﻿using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.API.Native;
+using DevExpress.XtraRichEdit.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DraftDocument
 {
-    public partial class DraftEditor : Form
+    internal partial class DraftEditor : Form
     {
-        List<DocumentField> _fields;
-        bool customDragDropTarget = false;
-        private Graphics richEditGraphics = null;
+        Document _document;
 
-        DocumentPosition pos;
-        const int maxPos = 100;
-
-
-        public DraftEditor(List<DocumentField> fields)
+        internal DraftEditor(Document doc)
         {
-            _fields = fields;
             InitializeComponent();
-            CreatePanelDraggableFields();
-            InitializeTextControl();
-            InitializeTableLayoutPanel();
+
+            _document = doc;
+            InitializeDocument(doc);
+
+            InitializeDataSource();
+
+            AddParametersToComboBox();
         }
 
-        private void InitializeTableLayoutPanel()
+        private void InitializeDocument(Document doc)
         {
-            groupBoxFields.AllowDrop = true;
-            groupBoxFields.DragEnter += groupBoxFields_DragEnter;
-            tableLayoutPanel.DragEnter += groupBoxFields_DragEnter;
+           
+            richEditControl.Text = _document.Text;
+            doc.OnAddParameter += doc_OnAddParameter;
         }
 
-        private void InitializeTextControl()
+        void doc_OnAddParameter(object sender, Parameter parameter)
         {
-            textControl.ContentChanged += richEditControlAccounting_ContentChanged;
-            textControl.DragDrop += richEditControlAccounting_DragDrop;
-            textControl.DragEnter += groupBoxFields_DragEnter;
-            textControl.DragOver += richEditControlAccounting_DragOver;
+            AddParametersToComboBox();
         }
 
-        private void richEditControlAccounting_ContentChanged(object sender, EventArgs e)
+        private void InitializeDataSource()
         {
-            if (((RichEditControl)sender).Text.Length > maxPos)
+            richEditControl.Options.MailMerge.DataSource = _document.Lines;
+            richEditControl.Options.MailMerge.ViewMergedData = true;
+        }
+
+        private void AddParametersToComboBox()
+        {
+            comboBoxParameters.Items.Clear();
+            var parameters = _document.GetParameters();
+            foreach (var parameter in parameters)
             {
-                pos = textControl.Document.CaretPosition;                
+                this.comboBoxParameters.Items.Add(parameter.Name);
             }
+            if (parameters.Count > 0)
+                comboBoxParameters.SelectedIndex = 0;
         }
 
-        private void richEditControlAccounting_DragDrop(object sender, DragEventArgs e)
+        private void ShowAllFieldsCodes()
         {
-            var text = e.Data.GetData(DataFormats.Text).ToString();
-            if (!string.IsNullOrEmpty(text))
+            ShowAllFieldCodesCommand command = new ShowAllFieldCodesCommand(richEditControl);
+            command.Execute();
+        }
+
+        private void buttonLoadFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Selecione o Arquivo";
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                var range = textControl.Document.InsertText(textControl.Document.CaretPosition, text);
-                DevExpress.XtraRichEdit.API.Native.Document doc = textControl.Document;
-
-                CharacterProperties cp = doc.BeginUpdateCharacters(range);
-                cp.FontName = "Arial";
-                cp.FontSize = 11;
-                cp.ForeColor = Color.Black;
-                cp.BackColor = Color.SkyBlue;
-                cp.Underline = UnderlineType.DoubleWave;
-                cp.UnderlineColor = Color.White;
-                doc.EndUpdateCharacters(cp);
-
-                var rangeSpace = textControl.Document.InsertText(textControl.Document.CaretPosition, " ");
-                CharacterProperties cpNormal = doc.BeginUpdateCharacters(rangeSpace);
-                cpNormal.FontName = "Arial";
-                cpNormal.FontSize = 11;
-                cpNormal.ForeColor = Color.Black;
-                cpNormal.BackColor = Color.White;
-                doc.EndUpdateCharacters(cpNormal);
+                richEditControl.Document.LoadDocument(openFileDialog.FileName, DocumentFormat.Undefined);
             }
+
+            tabControl.SelectedTabPageIndex = 0;
         }
 
-        private void richEditControlAccounting_DragOver(object sender, DragEventArgs e)
+        private void buttonPrint_Click(object sender, EventArgs e)
         {
-            if (!customDragDropTarget)
-                return;
-
-            Point docPoint = Units.PixelsToDocuments(textControl.PointToClient(System.Windows.Forms.Form.MousePosition),
-                textControl.DpiX, textControl.DpiY);
-
-            DocumentPosition pos = textControl.GetPositionFromPoint(docPoint);
-
-            if (pos == null)
-                return;
-
-            Rectangle rect = Units.DocumentsToPixels(textControl.GetBoundsFromPosition(pos),
-               textControl.DpiX, textControl.DpiY);
-
-            textControl.Document.CaretPosition = pos;
-
-            if (richEditGraphics == null)
-                richEditGraphics = textControl.CreateGraphics();
-
-            rect.Width = 2;
-            textControl.Refresh();
-            richEditGraphics.FillRectangle(Brushes.Blue, rect);
-            textControl.ScrollToCaret();
+            PrintPreviewCommand Command = new PrintPreviewCommand(richEditControlResult);
+            Command.Execute();
         }
 
-        private void groupBoxFields_DragEnter(object sender, DragEventArgs e)
+        private void ButtonAdd_Click(object sender, EventArgs e)
         {
+            var document = richEditControl.Document;
+            document.BeginUpdate();
+            document.Fields.Add(document.CaretPosition, string.Format(" {0} {1} ",
+                ParameterType.GetName(_document.GetParameterByName(comboBoxParameters.Text).Type), comboBoxParameters.Text));
+            document.Fields.Update();
+            document.EndUpdate();
 
-            if (!e.Data.GetDataPresent(DataFormats.Text))
-            {
-                e.Effect = DragDropEffects.None;
-                return;
-            }
-            e.Effect = DragDropEffects.Copy;
-            // string str = e.Data.GetData(typeof(String)) as String;
-
-            // SetCursorCustom(str);
+            ShowAllFieldsCodes();
         }
 
-        private void CreatePanelDraggableFields()
+        private void buttonEdit_Click(object sender, EventArgs e)
         {
-         var listPanels = new List<PanelControl>();
-            foreach (var field in _fields)
-            {
-                var label = GetLabelControl(field);
-                
-                label.Dock = DockStyle.Fill;
-                var panel = new PanelControl();
-                panel.AutoSize = true;
-                panel.Height = 20;
-                panel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-                panel.Controls.Add(label);
-                this.tableLayoutPanel.Controls.Add(panel);
-                
-                listPanels.Add(panel);
-            }
-         
-            this.tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel.AutoSize = true;
-
-            ResizeControls(listPanels);            
+            tabControl.SelectedTabPageIndex = 0;
         }
 
-        void ResizeControls(List<PanelControl> panelList)
+        private void buttonShowResult_Click(object sender, EventArgs e)
         {
-            var maxSize = panelList.Max(c => c.Width);
-            foreach (var item in panelList)
-            {
-                var panel = (item as PanelControl);
+            MailMergeOptions myMergeOptions = richEditControl.Document.CreateMailMergeOptions();
+            myMergeOptions.FirstRecordIndex = 0;
+            myMergeOptions.LastRecordIndex = _document.Lines.Count - 1;
+            myMergeOptions.MergeMode = MergeMode.NewSection;
 
-                panel.AutoSize = false;
-                panel.Width = maxSize;
+            richEditControl.Document.MailMerge(myMergeOptions, richEditControlResult.Document);
 
-                var label = panel.Controls[0] as LabelControl;
-                label.AutoSizeMode = LabelAutoSizeMode.None;
-                label.Dock = DockStyle.Fill;
-                label.ImageAlignToText = ImageAlignToText.TopCenter;
-            }
+            tabControl.SelectedTabPageIndex = 1;
         }
 
-        private LabelControl GetLabelControl(DocumentField field)
+        private void buttonSaveFile_Click(object sender, EventArgs e)
         {
-            var label = new LabelControl()
-            {
-                Size = new Size(120, 23),
-                Text = field.Name,
-                Tag = string.Format("[{0}]", field.Value),
-                AllowDrop = true
-            };
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Exportar Arquivo";
+            saveFileDialog.Filter = "Rtf File|*.rtf";
+            saveFileDialog.ShowDialog();
 
-            label.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            label.Appearance.BackColor = Color.SkyBlue;
-            label.Appearance.BackColor2 = Color.White;
-            label.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            label.Font = new Font(label.Font, FontStyle.Bold);
-
-
-            label.Padding = new Padding(2);
-            label.DragDrop += label_DragDrop;
-            label.MouseDown += label_MouseDown;
-            label.GiveFeedback += label_GiveFeedback;
-            label.ContextMenu = GetContextMenu(label.Tag);
-            return label;
+            richEditControlResult.SaveDocument(saveFileDialog.FileName, DocumentFormat.Rtf);
         }
 
-        private System.Windows.Forms.ContextMenu GetContextMenu(Object tag)
+        private void DraftEditor_FormClosed(object sender, FormClosedEventArgs e)
         {
-            var context = new System.Windows.Forms.ContextMenu();
-
-            context.MenuItems.Add("Inserir na posição do cursor", new EventHandler((object sender, EventArgs e) =>
-            {
-
-                textControl.Document.InsertText(textControl.Document.CaretPosition, tag.ToString());
-            }));
-            context.MenuItems[context.MenuItems.Count - 1].MergeType = MenuMerge.Add;
-
-            context.MenuItems.Add("Remover todas as ocorrências", new EventHandler((object sender, EventArgs e) =>
-            {
-
-                textControl.Document.ReplaceAll(tag.ToString(), "", SearchOptions.None);
-            }));
-            context.MenuItems[context.MenuItems.Count - 1].MergeType = MenuMerge.Add;
-
-            return context;
+            _document.Text = richEditControl.Document.RtfText ;
         }
-
-        private void label_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-            e.UseDefaultCursors = e.Effect != DragDropEffects.Copy;
-        }
-
-        private void label_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)
-                return;
-
-            customDragDropTarget = true;
-
-            DragDropEffects dde1 = DoDragDrop((sender as LabelControl).Tag, DragDropEffects.Copy);
-
-            customDragDropTarget = false;
-        }
-
-        private void label_DragDrop(object sender, DragEventArgs e)
-        {
-            (sender as LabelControl).DoDragDrop((sender as LabelControl).Tag, DragDropEffects.Copy);
-        }
-      
     }
 }

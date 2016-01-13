@@ -77,9 +77,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DraftDocument\DraftDocument.csproj">
       <Project>{d81a9a99-a60b-4c99-99fe-45b5ab0b871f}</Project>
       <Name>DraftDocument</Name>

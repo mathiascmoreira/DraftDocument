@@ -1,0 +1,11 @@
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\bin\Debug\DrafDocument.Demo.exe.config
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\bin\Debug\DrafDocument.Demo.exe
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\bin\Debug\DrafDocument.Demo.pdb
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\bin\Debug\DraftDocument.dll
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\bin\Debug\DraftDocument.pdb
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.csprojResolveAssemblyReference.cache
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.Form1.resources
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.Properties.Resources.resources
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.csproj.GenerateResource.Cache
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.exe
+C:\Users\Mathias\Documents\Visual Studio 2013\Projects\DraftDocument\DrafDocument.Demo\obj\Debug\DrafDocument.Demo.pdb

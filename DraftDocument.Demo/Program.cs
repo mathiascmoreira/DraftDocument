@@ -14,25 +14,56 @@ namespace DraftDocument.Demo
         [STAThread]
         static void Main()
         {
-            var contrato = new Contrato();
-            contrato.Id = 12;
-            contrato.Proposal = "venda";
+          
 
-            Document documento = new Document();
-            documento.AddField(contrato.Id.ToString(), "Id");
-            documento.AddField(contrato.Proposal, "Proposal");
-            documento.AddField(contrato.Id.ToString(), "Id");
-            documento.AddField(contrato.Proposal, "Proposal");
-            documento.AddField(contrato.Id.ToString(), "Id");
-            documento.AddField(contrato.Proposal, "Proposal");
-            documento.AddField(contrato.Id.ToString(), "Id");
-            documento.AddField(contrato.Id.ToString(), "Id");
-            documento.AddField(contrato.Proposal, "Proposal");
-            
-           
-
-            documento.ShowDraftEditor();                
-            
-        }
+       }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //private static object CreateObjectByParam(DraftDocParameter param)
+        //{
+        //    var propInf = param.GetType().GetProperties();
+
+        //    dynamic obj = new obj2();
+        //    obj.Moises = 123;
+           
+        //}
+
+
+        //public class DraftDocParameter
+        //{
+        //    public TypeParam TypeParam { get; set; }
+        //    public string Name { get; set; }
+        //    public string Value { get; set; }
+
+        //    public enum TypeParam
+        //    { 
+        //        Text,
+        //        Money,
+        //        Date
+        //    }
+        
 }
